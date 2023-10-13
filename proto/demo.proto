@@ -1,0 +1,15 @@
+syntax = "proto3";
+package rpc;
+option go_package = "./rpc";
+
+service Demo {
+    rpc Ping(EmptyMessage) returns (EmptyMessage);
+    rpc ForwardPing(ForwardPingRequest) returns (EmptyMessage);
+}
+
+message EmptyMessage {
+}
+
+message ForwardPingRequest {
+    uint32 port = 1;
+}
