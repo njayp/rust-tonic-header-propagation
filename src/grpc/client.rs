@@ -1,30 +1,21 @@
-use core::clone::Clone;
-use tonic::{transport::Endpoint, Request};
+use tonic::Request;
 
 use super::{
-    interceptors::{apply_context, Context},
     rpc::{demo_client::DemoClient, EmptyMessage, ForwardPingRequest},
     util::print_metadata,
 };
 
-pub async fn ping_with_ctx<T: 'static>(
+pub async fn ping_with_request(
     port: u32,
-    req: Request<T>,
+    request: Request<EmptyMessage>,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let mut fwd_req = Request::new(EmptyMessage {});
-    // pass context from previous request to new request
-    fwd_req
-        .extensions_mut()
-        .insert(req.extensions().get::<Context>().unwrap().clone());
-    let channel = Endpoint::from_shared(port_to_url(port))?.connect().await?;
-    let mut client = DemoClient::with_interceptor(channel, apply_context);
-    let responce = client.ping(fwd_req).await?;
-    print_metadata(responce.metadata());
+    let mut client = DemoClient::connect(port_to_url(port)).await?;
+    let response = client.ping(request).await?;
+    print_metadata(response.metadata());
     Ok(())
 }
 
 pub async fn ping_with_demo_header(port: u32) -> Result<(), Box<dyn std::error::Error>> {
-    let mut client = DemoClient::connect(port_to_url(port)).await?;
     let mut request = tonic::Request::new(EmptyMessage {});
 
     // add custom header
@@ -32,9 +23,7 @@ pub async fn ping_with_demo_header(port: u32) -> Result<(), Box<dyn std::error::
         .metadata_mut()
         .insert("x-demo", "x-demo-value".parse().unwrap());
 
-    let response = client.ping(request).await?;
-    print_metadata(response.metadata());
-    Ok(())
+    ping_with_request(port, request).await
 }
 
 pub async fn fwd_ping_with_demo_header(

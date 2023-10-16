@@ -7,10 +7,10 @@ pub fn print_metadata(metadata: &MetadataMap) {
     println!()
 }
 
-pub fn merge_metadata(md_into: &mut MetadataMap, md_from: &MetadataMap) {
-    metadata_for_each(&md_from, |key, value| {
+pub fn merge_metadata(metadata_into: &mut MetadataMap, metadata_from: &MetadataMap) {
+    metadata_for_each(&metadata_from, |key, value| {
         if key.to_string().starts_with("x-") {
-            md_into.insert(key, value.to_owned());
+            metadata_into.insert(key, value.to_owned());
         }
     })
 }
