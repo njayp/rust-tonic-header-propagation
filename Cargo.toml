@@ -11,6 +11,15 @@ tonic = "0.10"
 prost = "0.12"
 tower = "0.4"
 hyper = "0.14"
+clap = { version = "4.1", features = ["derive"] }
 
 [build-dependencies]
 tonic-build = "0.10"
+
+[[bin]]
+name = "server"
+path = "src/main.rs"
+
+[[bin]]
+name = "cli"
+path = "src/cli.rs"

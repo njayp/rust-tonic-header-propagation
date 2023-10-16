@@ -4,7 +4,7 @@ use std::{
     time::Duration,
 };
 
-use hyper::{header::HeaderValue, Body, HeaderMap};
+use hyper::Body;
 use tonic::{body::BoxBody, transport::Server, Request, Response, Status};
 use tower::{Layer, Service};
 
@@ -14,7 +14,7 @@ use super::{
         demo_server::{Demo, DemoServer},
         EmptyMessage, ForwardPingRequest,
     },
-    util::{merge_metadata, print_metadata},
+    util::print_metadata,
 };
 
 struct DemoServerImpl {}
@@ -35,8 +35,10 @@ impl Demo for DemoServerImpl {
 
         // create new request
         let mut forward_request = Request::new(EmptyMessage {});
-        // propagate metadata to new request
-        merge_metadata(forward_request.metadata_mut(), request.metadata());
+        // store request metadata in new request
+        forward_request
+            .extensions_mut()
+            .insert(request.metadata().clone());
         // send forward request
         match ping_with_request(request.get_ref().port, forward_request).await {
             Ok(()) => (),
