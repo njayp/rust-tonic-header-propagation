@@ -1,12 +1,11 @@
 # Propagating Headers When Using GRPC in Rust
 
 ## Motivation
+Many useful Kubernetes tools, such as OpenTelemetry and [Telepresence](https://www.getambassador.io/products/telepresence), require header propagation to function. Today, I wanted to share with you one of my favorite tools to tackle this challenge. Let's dive into gRPC and Tonic! 
 
 [gRPC](https://grpc.io/docs/what-is-grpc/introduction/) is a remarkable communication protocol, known for its speed, versatility, and efficiency. Developed by Google, it excels in high-performance scenarios, offers support for multiple languages, simplifies development, and enhances security and scalability. With clear interface definitions and powerful features, gRPC stands as a top choice for building modern, reliable distributed systems.
 
-[tonic](https://docs.rs/tonic/latest/tonic/) is a powerful Rust library for building gRPC network services. It empowers developers to create fast, reliable, and idiomatic services while benefiting from Rust's safety and concurrency features.
-
-Many useful Kubernetes tools, such as OpenTelemetry and Telepresence, require header propagation to function. This resitory shows how to propigate headers in Rust using `tonic` and `tower`.
+[Tonic](https://docs.rs/tonic/latest/tonic/) is a powerful Rust library for building gRPC network services. It empowers developers to create fast, reliable, and idiomatic services while benefiting from Rust's safety and concurrency features. The belwo repository shows how to propagate headers in Rust using `tonic` and `tower`.
 
 This repository for this demo can be found [here](https://github.com/njayp/rust-tonic-header-propagation).
 
@@ -194,7 +193,8 @@ pub async fn ping_with_request(
 }
 ```
 
-## Acknowledgements
+## More Resources
+I hope you found this deep dive into Tonic and gRPC helpful! Now, you're ready to create some proper header propagation in your own [Telepresence](https://www.getambassador.io/products/telepresence) instance. I invite you to explore Telepresence for free by getting started [here](https://www.getambassador.io/editions). 
 
 - [Building gRPC APIs with Rust](https://konghq.com/blog/engineering/building-grpc-apis-with-rust)
 - [GitHub Tonic Examples](https://github.com/hyperium/tonic/blob/master/examples/src/tower/server.rs)
