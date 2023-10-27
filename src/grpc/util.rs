@@ -7,7 +7,7 @@ pub fn print_metadata(metadata: &MetadataMap) {
     println!()
 }
 
-// propagate "-x" metadata (headers)
+// propagate "x-" metadata (headers)
 pub fn merge_metadata(metadata_into: &mut MetadataMap, metadata_from: &MetadataMap) {
     metadata_for_each(&metadata_from, |key, value| {
         if key.to_string().starts_with("x-") {

@@ -111,10 +111,10 @@ where
         let mut inner = std::mem::replace(&mut self.inner, clone);
 
         Box::pin(async move {
-            // copy request header map for later use
+            // copy request header map
             let req_header_map = &req.headers().clone();
             let mut response = inner.call(req).await?;
-            // propagate "-x" headers from copied request header map to response header map
+            // propagate "x-" headers from copied request header map to response header map
             for (key, value) in req_header_map.iter() {
                 if key.to_string().starts_with("x-") {
                     response.headers_mut().insert(key, value.clone());
